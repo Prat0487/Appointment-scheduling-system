@@ -123,3 +123,8 @@ def generate_appointment_id():
     # This is a simple implementation. In a real system, you might use a more sophisticated method.
     import random
     return f"APT-{random.randint(1000, 9999)}"
+
+def add_to_calendar(appointment):
+    """Add appointment to calendar."""
+    # This is a placeholder function. In a real system, this would integrate with a calendar service.
+    print(f"Adding appointment to calendar: {appointment}")

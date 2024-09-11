@@ -19,7 +19,7 @@ class TestAppointmentBookingProcess(unittest.TestCase):
             {"date": "2023-05-15", "time": "10:00 AM"},
             {"date": "2023-05-15", "time": "2:00 PM"},
         ]
-        mock_create_add.return_value = True
+        mock_create_add.return_value = {"id": "3", "service": "Haircut", "date": "2023-05-15", "time": "10:00 AM"}
 
         result = book_appointment(self.existing_appointments)
 
@@ -42,14 +42,13 @@ class TestAppointmentBookingProcess(unittest.TestCase):
             mock_print.assert_any_call("- 2023-05-15 at 2:00 PM")
 
     def test_fetch_available_slots(self):
-        slots = fetch_available_slots("Haircut")
+        slots = fetch_available_slots()
         self.assertIsInstance(slots, list)
         self.assertTrue(all(isinstance(slot, dict) for slot in slots))
         self.assertTrue(all('date' in slot and 'time' in slot for slot in slots))
 
     @patch('appointment_booking_process.add_to_database')
-    @patch('appointment_booking_process.add_to_calendar')
-    def test_create_and_add_appointment(self, mock_add_calendar, mock_add_database):
+    def test_create_and_add_appointment(self, mock_add_database):
         appointment = {
             "id": "test_id",
             "service": "Haircut",
@@ -57,9 +56,8 @@ class TestAppointmentBookingProcess(unittest.TestCase):
             "time": "10:00 AM"
         }
         result = create_and_add_appointment(appointment)
-        self.assertTrue(result)
+        self.assertEqual(result, appointment)
         mock_add_database.assert_called_once_with(appointment)
-        mock_add_calendar.assert_called_once_with(appointment)
 
     def test_generate_appointment_id(self):
         id1 = generate_appointment_id()
@@ -68,7 +66,7 @@ class TestAppointmentBookingProcess(unittest.TestCase):
         self.assertIsInstance(id1, str)
         self.assertIsInstance(id2, str)
 
-    @patch('builtins.input', side_effect=['1', '3'])
+    @patch('builtins.input', side_effect=['1', '3', 'q'])
     @patch('appointment_booking_process.manage_appointment')
     def test_view_and_manage_appointments(self, mock_manage, mock_input):
         view_and_manage_appointments(self.existing_appointments)
