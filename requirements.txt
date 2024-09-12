@@ -6,7 +6,7 @@ itsdangerous==2.1.2
 click==8.1.3
 gunicorn==20.1.0
 python-dotenv==1.0.0
-psycopg2==2.9.6
+
 Flask-SQLAlchemy==3.0.3
 Flask-Migrate==4.0.4
 Flask-CORS==3.0.10
@@ -21,3 +21,7 @@ whitenoise==6.4.0
 # Instead, you can use the following command in your terminal:
 #!/usr/bin/env python
 
+
+psycopg2-binary==2.9.6
+
+flask_login
